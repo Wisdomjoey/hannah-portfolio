@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Upload, File, Trash2, Download } from "lucide-react";
 
 interface Assignment {
@@ -37,10 +37,10 @@ const Assignments = () => {
     handleFiles(files);
   };
 
-  const handleFiles = (files: File[]) => {
-    const newAssignments = files.map(file => ({
+  const handleFiles = (files: File[], names: string[]) => {
+    const newAssignments = files.map((file, ind) => ({
       id: Math.random().toString(36).substr(2, 9),
-      name: file.name,
+      name: names[ind] ?? file.name,
       date: new Date().toLocaleDateString(),
       size: formatFileSize(file.size),
       file: file
@@ -71,6 +71,24 @@ const Assignments = () => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
+
+  useEffect(() => {
+    const filePath = "https://envie-portfolio.vercel.app/A. I han.pdf"; // Replace with the actual file path
+
+    const fetchData = async () => {
+      try {
+        const res = await fetch(filePath)
+
+        if (!res.ok) return console.log('Couldnt fetch file')
+
+        const blob = await res.blob()
+
+        handleFiles([blob], ['A. I han.pdf'])
+      } catch (error) {
+        console.error(error)
+        console.log('Something went wrong')
+      }
+    }
 
   return (
     <div className="max-w-4xl mx-auto">
