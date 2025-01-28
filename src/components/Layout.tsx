@@ -1,17 +1,18 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
+import React from "react";
+import logo from "../assets/logo.png";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const location = useLocation();
 
   const navigation = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' },
-    { name: 'Assignments', path: '/assignments' },
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
+    { name: "Assignments", path: "/assignments" },
   ];
 
   const isActive = (path: string) => {
@@ -23,9 +24,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <nav className="bg-white dark:bg-gray-800 shadow-lg transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
-            <div className="flex">
-              <Link to="/" className="flex items-center">
-                <span className="text-xl font-bold text-gray-800 dark:text-white">Portfolio</span>
+            <div className="flex items-center h-full py-2">
+              <Link to="/" className="h-full">
+                <img src={logo} alt="Logo" className="h-full object-contain" />
               </Link>
             </div>
 
@@ -37,8 +38,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   to={item.path}
                   className={`px-3 py-2 rounded-md text-sm font-medium ${
                     isActive(item.path)
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/50'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/50'
+                      ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/50"
+                      : "text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/50"
                   }`}
                 >
                   {item.name}
@@ -70,8 +71,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   to={item.path}
                   className={`block px-3 py-2 text-base font-medium ${
                     isActive(item.path)
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/50'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/50'
+                      ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/50"
+                      : "text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/50"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >

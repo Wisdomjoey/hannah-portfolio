@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Upload, File, Trash2 } from "lucide-react";
+import { Upload, File, Trash2, Download } from "lucide-react";
 
 interface Assignment {
   id: string;
   name: string;
   date: string;
   size: string;
+  file: File;
 }
 
 const Assignments = () => {
@@ -37,26 +38,38 @@ const Assignments = () => {
   };
 
   const handleFiles = (files: File[]) => {
-    const newAssignments = files.map((file) => ({
+    const newAssignments = files.map(file => ({
       id: Math.random().toString(36).substr(2, 9),
       name: file.name,
       date: new Date().toLocaleDateString(),
       size: formatFileSize(file.size),
+      file: file
     }));
-
-    setAssignments((prev) => [...prev, ...newAssignments]);
+    
+    setAssignments(prev => [...prev, ...newAssignments]);
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes";
+    if (bytes === 0) return '0 Bytes';
     const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
   const removeAssignment = (id: string) => {
     setAssignments((prev) => prev.filter((assignment) => assignment.id !== id));
+  };
+
+  const downloadAssignment = (assignment: Assignment) => {
+    const url = URL.createObjectURL(assignment.file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = assignment.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -120,12 +133,21 @@ const Assignments = () => {
                     </p>
                   </div>
                 </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => downloadAssignment(assignment)}
+                    className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/50 group"
+                    title="Download"
+                  >
+                    <Download className="w-5 h-5 text-slate-400 group-hover:text-blue-500 dark:text-slate-500 dark:group-hover:text-blue-400" />
+                  </button>
                 <button
                   onClick={() => removeAssignment(assignment.id)}
                   className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400"
                 >
                   <Trash2 size={20} />
                 </button>
+                </div>
               </li>
             ))}
           </ul>
