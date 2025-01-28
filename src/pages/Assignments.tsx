@@ -73,7 +73,7 @@ const Assignments = () => {
   };
 
   useEffect(() => {
-    const filePath = "https://envie-portfolio.vercel.app/A. I han.pdf"; // Replace with the actual file path
+    const filePath = "https://hannah-portfolio-rosy.vercel.app/A. I han.pdf"; // Replace with the actual file path
 
     const fetchData = async () => {
       try {
@@ -92,7 +92,7 @@ const Assignments = () => {
     };
 
     fetchData();
-  });
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto">
