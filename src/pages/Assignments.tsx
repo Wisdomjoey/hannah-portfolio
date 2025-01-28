@@ -37,7 +37,7 @@ const Assignments = () => {
     handleFiles(files);
   };
 
-  const handleFiles = (files: File[], names: string[]) => {
+  const handleFiles = (files: File[], names?: string[]) => {
     const newAssignments = files.map((file, ind) => ({
       id: Math.random().toString(36).substr(2, 9),
       name: names[ind] ?? file.name,
