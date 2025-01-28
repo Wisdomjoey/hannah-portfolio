@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Upload, File, Trash2, Download } from "lucide-react";
+import { Upload, File as FileIcon, Trash2, Download } from "lucide-react";
 
 interface Assignment {
   id: string;
@@ -43,18 +43,18 @@ const Assignments = () => {
       name: (names ?? [])[ind] ?? file.name,
       date: new Date().toLocaleDateString(),
       size: formatFileSize(file.size),
-      file: file
+      file: file,
     }));
-    
-    setAssignments(prev => [...prev, ...newAssignments]);
+
+    setAssignments((prev) => [...prev, ...newAssignments]);
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   const removeAssignment = (id: string) => {
@@ -63,7 +63,7 @@ const Assignments = () => {
 
   const downloadAssignment = (assignment: Assignment) => {
     const url = URL.createObjectURL(assignment.file);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = assignment.name;
     document.body.appendChild(a);
@@ -77,18 +77,22 @@ const Assignments = () => {
 
     const fetchData = async () => {
       try {
-        const res = await fetch(filePath)
+        const res = await fetch(filePath);
 
-        if (!res.ok) return console.log('Couldnt fetch file')
+        if (!res.ok) return console.log("Couldnt fetch file");
 
-        const blob = await res.blob()
+        const blob = await res.blob();
+        const file = new File([blob], "A. I han.pdf", { type: blob.type });
 
-        handleFiles([blob], ['A. I han.pdf'])
+        handleFiles([file]);
       } catch (error) {
-        console.error(error)
-        console.log('Something went wrong')
+        console.error(error);
+        console.log("Something went wrong");
       }
-    }
+    };
+
+    fetchData();
+  });
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -141,7 +145,7 @@ const Assignments = () => {
                 className="p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <div className="flex items-center">
-                  <File className="w-5 h-5 text-gray-400 dark:text-gray-500 mr-3" />
+                  <FileIcon className="w-5 h-5 text-gray-400 dark:text-gray-500 mr-3" />
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white">
                       {assignment.name}
@@ -159,12 +163,12 @@ const Assignments = () => {
                   >
                     <Download className="w-5 h-5 text-slate-400 group-hover:text-blue-500 dark:text-slate-500 dark:group-hover:text-blue-400" />
                   </button>
-                <button
-                  onClick={() => removeAssignment(assignment.id)}
-                  className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400"
-                >
-                  <Trash2 size={20} />
-                </button>
+                  <button
+                    onClick={() => removeAssignment(assignment.id)}
+                    className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400"
+                  >
+                    <Trash2 size={20} />
+                  </button>
                 </div>
               </li>
             ))}
